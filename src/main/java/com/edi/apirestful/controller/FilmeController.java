@@ -8,6 +8,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("api/filmes")
 public class FilmeController {
@@ -54,11 +56,21 @@ public class FilmeController {
         }
     }
 
-    @GetMapping("/export/max/interval")
+    @GetMapping("/export/producers/max/interval")
     public ResponseEntity<FilmeDto> exportMaxInterval() {
         try {
-            FilmeDto filmeDto = service.exportMaxInterval();
+            FilmeDto filmeDto = service.exportProducersMaxInterval();
             return new ResponseEntity<>(filmeDto, HttpStatus.OK);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().header("Erro ao exportar " + e.getMessage() + ".").body(null);
+        }
+    }
+
+    @GetMapping("/export/producers/two/prizes/next")
+    public ResponseEntity<List<FilmeDto>> exportTwoPrizesNext() {
+        try {
+            List<FilmeDto> list = service.exportProducersTwoPrizesNext();
+            return new ResponseEntity<>(list, HttpStatus.OK);
         } catch (Exception e) {
             return ResponseEntity.badRequest().header("Erro ao exportar " + e.getMessage() + ".").body(null);
         }

@@ -10,7 +10,7 @@ Banco de dados em memória que pode ser acessado por [http://localhost:8080/h2-c
 Api cliente [https://www.postman.com/downloads/](https://www.postman.com/downloads/).
   endereço: http://localhost:8080/api/filmes/  
 
-  endpoints:
+  endpoints api:
     POST
         exemple json file:
         { 
@@ -21,7 +21,8 @@ Api cliente [https://www.postman.com/downloads/](https://www.postman.com/downloa
         }
     PUT{id}
     DELETE{id}
-    GET("/export/max/interval")
+    GET("/export/producers/max/interval")
+    GET("/export/producers/two/prizes/next")
 
     
         

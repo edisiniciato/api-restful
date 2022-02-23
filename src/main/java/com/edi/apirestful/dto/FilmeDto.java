@@ -1,5 +1,7 @@
 package com.edi.apirestful.dto;
 
+import java.util.Objects;
+
 public class FilmeDto {
 
     private String producer;
@@ -44,5 +46,18 @@ public class FilmeDto {
 
     public void setFollowingWin(Long followingWin) {
         this.followingWin = followingWin;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        FilmeDto filmeDto = (FilmeDto) o;
+        return Objects.equals(producer, filmeDto.producer);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(producer);
     }
 }
