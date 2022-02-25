@@ -67,10 +67,10 @@ public class FilmeController {
     }
 
     @GetMapping("/export/producers/two/prizes/next")
-    public ResponseEntity<List<FilmeDto>> exportTwoPrizesNext() {
+    public ResponseEntity<FilmeDto> exportTwoPrizesNext() {
         try {
-            List<FilmeDto> list = service.exportProducersTwoPrizesNext();
-            return new ResponseEntity<>(list, HttpStatus.OK);
+            FilmeDto dto = service.exportProducersTwoPrizesNext();
+            return new ResponseEntity<>(dto, HttpStatus.OK);
         } catch (Exception e) {
             return ResponseEntity.badRequest().header("Erro ao exportar " + e.getMessage() + ".").body(null);
         }

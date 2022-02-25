@@ -13,7 +13,7 @@ public interface FilmeRepository extends JpaRepository<Filme, Long> {
 
     @Query(value = "select distinct f.* from filme f " +
             "       inner join filme_vencedor fv on fv.filme_id = f.id " +
-            "       order by f.producers ", nativeQuery = true)
+            "       order by f.year ", nativeQuery = true)
     List<Filme> findWinners();
 
     @Query(value = "select fv from FilmeVencedor fv where fv.filme = ?1")

@@ -109,55 +109,12 @@ public class FilmeService implements Serializable {
         return dtos.stream().max(Comparator.comparing(FilmeDto::getInterval)).get();
     }
 
-    public List<FilmeDto> exportProducersTwoPrizesNext() {
+    public FilmeDto exportProducersTwoPrizesNext() {
         List<Filme> filmes = repository.findWinners();
-        Map<String, List<Long>> map = new HashMap<>();
+        Long firtYear = filmes.stream().findFirst().get().getYear();
 
-        preencherMapProdutoresPorAno(filmes, map);
-
-        List<FilmeDto> dtos = getProducersTwoPrizesNext(map);
-        removeSecondProducerTwoPrizes(dtos);
-        return dtos;
-    }
-
-    private List<FilmeDto> getProducersTwoPrizesNext(Map<String, List<Long>> map) {
-        List<FilmeDto> dtos = new ArrayList<>();
-        for (Map.Entry<String, List<Long>> entry : map.entrySet()) {
-            if (entry.getValue().size() > 1) {
-                String producer = entry.getKey();
-
-                Long firtYear = entry.getValue().stream().min(Comparator.comparing(Long::longValue)).get();
-                Long nextYear = entry.getValue().stream().skip(1).findAny().get();
-
-                FilmeDto filmeDto = new FilmeDto(producer, firtYear, nextYear);
-                dtos.add(filmeDto);
-            }
-        }
-        return dtos;
-    }
-
-    private void preencherMapProdutoresPorAno(List<Filme> filmes, Map<String, List<Long>> map) {
-        filmes.forEach(f -> {
-            String producers = f.getProducers().trim();
-            if (!map.containsKey(producers)) {
-                map.put(producers, new ArrayList<>());
-            }
-            List<Long> filmesVo = map.get(producers);
-            filmesVo.add(f.getYear());
-            map.put(producers, filmesVo);
-        });
-    }
-
-    private void removeSecondProducerTwoPrizes(List<FilmeDto> dtos) {
-        FilmeDto firts = dtos.stream().min(Comparator.comparing(FilmeDto::getInterval)).get();
-        Iterator<FilmeDto> iterator = dtos.iterator();
-        while (iterator.hasNext()) {
-            FilmeDto next = iterator.next();
-            if (!firts.equals(next)
-                    && !next.getInterval().equals(firts.getInterval())) {
-                iterator.remove();
-            }
-        }
+        Filme filme = filmes.stream().filter(f -> f.getWinners().size() > 1).findFirst().get();
+        return new FilmeDto(filme.getProducers(), firtYear, filme.getYear());
     }
 
     private List<FilmeDto> getProducersMaxInterval(Map<String, List<FilmeVO>> map) {
